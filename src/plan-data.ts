@@ -1,3 +1,4 @@
+import { assign } from 'svelte/internal';
 import type { DayPlannerSettings } from './settings';
 
 const moment = (window as any).moment;
@@ -62,9 +63,11 @@ export class PlanItem {
     rawTime: string;
     text: string;
     raw: string;
+    tags: [string];
+    color: string;
 
     constructor(matchIndex: number, charIndex: number, isCompleted: boolean, 
-        isBreak: boolean, isEnd: boolean, time: Date, rawTime:string, text: string, raw: string){
+        isBreak: boolean, isEnd: boolean, time: Date, rawTime:string, text: string, raw: string, tags: [string], color: string){
         this.matchIndex = matchIndex;
         this.charIndex = charIndex;
         this.isCompleted = isCompleted;
@@ -74,6 +77,8 @@ export class PlanItem {
         this.rawTime = rawTime;
         this.text = text;
         this.raw = raw;
+        this.tags = tags;
+        this.color = color;
     }
 }
 
@@ -84,9 +89,10 @@ export class PlanItemFactory {
         this.settings = settings;
     }
 
-    getPlanItem(matchIndex: number, charIndex: number, isCompleted: boolean, isBreak: boolean, isEnd: boolean, time: Date, rawTime: string, text: string, raw: string) {
+    getPlanItem(matchIndex: number, charIndex: number, isCompleted: boolean, isBreak: boolean, isEnd: boolean, time: Date, rawTime: string, text: string, raw: string, tags: [string]) {
         const displayText = this.getDisplayText(isBreak, isEnd, text);
-        return new PlanItem(matchIndex, charIndex, isCompleted, isBreak, isEnd, time, rawTime, displayText, raw);
+        const color = this.getColor(tags)
+        return new PlanItem(matchIndex, charIndex, isCompleted, isBreak, isEnd, time, rawTime, displayText, raw, tags, color);
     }
 
     getDisplayText(isBreak: boolean, isEnd: boolean, text: string) {
@@ -97,5 +103,12 @@ export class PlanItemFactory {
             return this.settings.endLabel;
         }
         return text;
+    }
+
+    getColor(tags: [string]) {
+        // TODO: Make this synthesize the colors or something
+        const color = this.settings.colorMap[tags[0]] ?? "C2C2C2"
+        console.log(`${tags[0]}: ${color}`);
+        return this.settings.colorMap[tags[0]] ?? "C2C2C2"
     }
 }

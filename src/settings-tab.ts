@@ -7,6 +7,7 @@ import { DayPlannerMode }from './settings';
 import MomentDateRegex from './moment-date-regex';
 import type DayPlanner from './main';
 import { ICONS } from './constants';
+import { Console } from 'console';
   
   export class DayPlannerSettingsTab extends PluginSettingTab {
     momentDateRegex = new MomentDateRegex();
@@ -20,6 +21,17 @@ import { ICONS } from './constants';
       const { containerEl } = this;
   
       containerEl.empty();
+
+      new Setting(containerEl)
+        .setName('Color <-> Tag Mapping')
+        .setDesc('Map tags to colors yo')
+        .addTextArea(textArea =>
+          textArea
+            .setPlaceholder("{ \"tag\": \"hex color\", ... }")
+            .onChange((value:string) => {
+              this.plugin.settings.colorMap = this.createColorMap(value);
+              this.plugin.saveData(this.plugin.settings);
+            }));
 
       new Setting(containerEl)
         .setName('Day Planner Mode')
@@ -161,6 +173,19 @@ import { ICONS } from './constants';
       a.target = '_blank';
       descEl.appendChild(a);
       descEl.appendChild(document.createElement('br'));
+    }
+
+    private createColorMap(s: string) {
+      var map = {};
+
+      try {
+        map = JSON.parse(s);
+        console.log(map);
+      } catch (e) {
+        console.warn('invalid json');
+      }
+
+      return map;
     }
 
   }
