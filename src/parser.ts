@@ -53,7 +53,8 @@ export default class Parser {
                     time, 
                     `${value.groups.hours.padStart(2, '0')}:${value.groups.minutes}`,
                     value.groups.text?.trim(),
-                    value[0]
+                    value[0],
+                    [value.groups.tag?.trim()]
                 );
             } catch (error) {
                 console.log(error);

@@ -107,8 +107,9 @@ export class PlanItemFactory {
 
     getColor(tags: [string]) {
         // TODO: Make this synthesize the colors or something
-        const color = this.settings.colorMap[tags[0]] ?? "C2C2C2"
-        console.log(`${tags[0]}: ${color}`);
-        return this.settings.colorMap[tags[0]] ?? "C2C2C2"
+        const firstTag = tags[0];
+        const color = this.settings.colorMap[firstTag] ?? "#C2C2C2";
+        console.log(`${firstTag}: ${color}`);
+        return color;
     }
 }

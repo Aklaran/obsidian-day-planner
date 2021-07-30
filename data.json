@@ -12,6 +12,6 @@
   "breakLabel": "BREAK",
   "endLabel": "END",
   "colorMap": {
-    "foo": "bar"
+    "#time/side-projects": "#EE4B6A"
   }
 }
