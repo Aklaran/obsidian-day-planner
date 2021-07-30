@@ -28,6 +28,7 @@ import { Console } from 'console';
         .addTextArea(textArea =>
           textArea
             .setPlaceholder("{ \"tag\": \"hex color\", ... }")
+            .setValue(JSON.stringify(this.plugin.settings.colorMap))
             .onChange((value:string) => {
               this.plugin.settings.colorMap = this.createColorMap(value);
               this.plugin.saveData(this.plugin.settings);
